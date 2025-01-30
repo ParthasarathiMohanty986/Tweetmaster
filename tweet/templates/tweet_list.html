@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Chai aur tweet
+{% endblock %}
+
+{% block content %}
+<h1 class="bg-dark text-white text-center mt-3">
+    Welcome to Tweet-Master
+</h1>
+
+<a class="btn btn-primary mb-5" href="{% url 'tweet_create' %}">Create a tweet</a>
+
+<!-- Display Search Query -->
+{% if query %}
+    <p class="text-center">Search results for: <strong>{{ query }}</strong></p>
+{% endif %}
+
+<div class="container row gap-3">
+    {% for tweet in tweets %}
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{{ tweet.photo.url }}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{ tweet.user.username }}</h5>
+            <p class="card-text">{{ tweet.text }}</p>
+            {% if tweet.user == user %}
+            <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center">No tweets found.</p>
+    {% endfor %}
+</div>
+{% endblock %}
